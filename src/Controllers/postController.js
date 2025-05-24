@@ -5,8 +5,8 @@ export const createPost = async (req, res, next) => {
         return next(errorHandler(403, "All the fields are required"));
     }
 
-    const { title, content, tags, category } = req.body;
-    const newPost = new Post({ title, content, tags, category });
+    const { title, content, category } = req.body;
+    const newPost = new Post({ title, content, category });
 
     try {
         const savedPost = await newPost.save();
@@ -30,7 +30,7 @@ export const getAllPost = async (req, res, next) => {
 
 export const updatePost = async (req,res,next) => {
     const { id } = req.params;
-    const { title, content, tags, category } = req.body;
+    const { title, content, category } = req.body;
 
     if (!title || !content) {
         return next(errorHandler(403, "All the fields are required"));
@@ -39,7 +39,7 @@ export const updatePost = async (req,res,next) => {
     try {
         const updatedPost = await Post.findByIdAndUpdate(
             id,
-            { title, content, tags, category },
+            { title, content, category },
             { new: true }
         );
         res.status(200).json({
