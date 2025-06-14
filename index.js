@@ -11,10 +11,7 @@ const app = express();
 //database connected
 connectDB();
 
-app.use(cors({
-    origin: "*",
-    credentials: true,
-}))
+app.use(cors())   //{origin: "*",credentials: true,}
 
 app.use(express.json());
 app.use("/api/auth",authRouter)
