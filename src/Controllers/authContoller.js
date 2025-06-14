@@ -18,10 +18,17 @@ export const registerUser = async (req, res, next) => {
     return next(errorHandler(400, "All the Fields are required"));
   }
 
-  const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return next(errorHandler(409, "Email already exists")); 
+  const existingUser = await User.findOne({
+    $or: [{ email }, { username }],
+  });
+
+  if (existingUser) {
+    if (existingUser.email === email) {
+      return next(errorHandler(400, "Email already exists"));
+    } else if (existingUser.username === username) {
+      return next(errorHandler(400, "Username already exists"));
     }
+  }
 
   const hashPassword = bcryptjs.hashSync(password, 10);
 
